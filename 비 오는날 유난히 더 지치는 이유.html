@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>비 오는 날, 유난히 더 지치는 이유 | 속건강내과의원</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-style:normal !important; }
+
+:root {
+  --rain-dark:   #1e2a35;
+  --rain-mid:    #2e3f50;
+  --rain-blue:   #4a7fa5;
+  --rain-pale:   #c8dce8;
+  --cream:       #f5f2ee;
+  --warm-white:  #fafaf8;
+  --text-dark:   #1a2028;
+  --text-body:   #3a4550;
+  --text-muted:  #6b7a87;
+  --teal-accent: #3e8fa8;
+  --gold:        #b89a5a;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--warm-white);
+  color: var(--text-body);
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+/* ── 빗방울 캔버스 ── */
+#rain-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  background: linear-gradient(160deg, var(--rain-dark) 0%, var(--rain-mid) 60%, #2a4a5e 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px 60px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 60%, rgba(74,127,165,0.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(74,127,165,0.12) 0%, transparent 50%);
+}
+
+.hero-emoji {
+  font-size: 3.2rem;
+  margin-bottom: 28px;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.hero-eyebrow {
+  position: relative; z-index: 1;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--rain-pale);
+  opacity: 0.75;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  position: relative; z-index: 1;
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(1.7rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.4;
+  margin-bottom: 28px;
+  word-break: keep-all;
+}
+
+.hero h1 em {
+  color: var(--rain-pale);
+  font-style: normal !important;
+  position: relative;
+}
+.hero h1 em::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 2px;
+  background: var(--teal-accent);
+  border-radius: 2px;
+}
+
+.hero-desc {
+  position: relative; z-index: 1;
+  font-size: 0.95rem;
+  color: rgba(200,220,232,0.8);
+  max-width: 420px;
+  line-height: 1.85;
+}
+
+.scroll-hint {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  animation: bounce 2s ease-in-out infinite;
+}
+.scroll-hint::after {
+  content: '';
+  width: 1px; height: 36px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ── ARTICLE WRAPPER ── */
+.article-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 72px 24px 80px;
+  position: relative; z-index: 1;
+}
+
+/* ── 도입부 인용구 ── */
+.opening-quote {
+  background: linear-gradient(135deg, #edf4f8 0%, #e4eff6 100%);
+  border-left: 3px solid var(--teal-accent);
+  border-radius: 0 12px 12px 0;
+  padding: 24px 28px;
+  margin-bottom: 48px;
+  position: relative;
+}
+.opening-quote p {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.05rem;
+  color: var(--rain-mid);
+  line-height: 1.9;
+  word-break: keep-all;
+}
+
+/* ── 본문 단락 ── */
+.body-para {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.95;
+  margin-bottom: 28px;
+  word-break: keep-all;
+}
+
+/* ── 소제목 ── */
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 52px 0 20px;
+}
+.section-heading .dot {
+  width: 8px; height: 8px;
+  background: var(--teal-accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.section-heading h2 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--rain-dark);
+}
+
+/* ── 원인 카드들 ── */
+.cause-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 28px 0 36px;
+}
+.cause-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px 26px;
+  box-shadow: 0 2px 16px rgba(30,42,53,0.07);
+  border: 1px solid rgba(74,127,165,0.1);
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.cause-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(30,42,53,0.11);
+}
+.cause-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cause-card h3 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--rain-dark);
+  margin-bottom: 6px;
+}
+.cause-card p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+}
+
+/* ── 구분선 ── */
+.divider {
+  display: flex; align-items: center; gap: 14px;
+  margin: 48px 0;
+}
+.divider span { flex: 1; height: 1px; background: #dde5ea; }
+.divider i { color: var(--rain-pale); font-size: 0.8rem; letter-spacing: 0.2em; }
+
+/* ── 실천 팁 카드 ── */
+.tips-box {
+  background: linear-gradient(135deg, var(--rain-dark) 0%, var(--rain-mid) 100%);
+  border-radius: 16px;
+  padding: 36px 32px;
+  margin: 36px 0;
+  position: relative;
+  overflow: hidden;
+}
+.tips-box::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: rgba(74,127,165,0.2);
+  border-radius: 50%;
+}
+.tips-box h3 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--rain-pale);
+  margin-bottom: 22px;
+  position: relative; z-index: 1;
+}
+.tips-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative; z-index: 1;
+}
+.tips-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.93rem;
+  color: #d4e8f0;
+  line-height: 1.6;
+}
+.tips-list li .check {
+  width: 26px; height: 26px;
+  background: var(--teal-accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── 경고 박스 ── */
+.warning-box {
+  background: #fff8f0;
+  border: 1px solid #f0d5b0;
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin: 36px 0;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.warning-box .warn-icon { font-size: 1.4rem; flex-shrink: 0; }
+.warning-box p {
+  font-size: 0.9rem;
+  color: #6b4e2a;
+  line-height: 1.8;
+}
+.warning-box strong { color: #8b5e2a; font-weight: 700; }
+
+/* ── 마무리 문단 ── */
+.closing {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.05rem;
+  color: var(--rain-dark);
+  line-height: 2;
+  margin: 40px 0;
+  padding: 32px 0;
+  border-top: 1px solid #dde5ea;
+  border-bottom: 1px solid #dde5ea;
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* ── 병원 정보 카드 ── */
+.clinic-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 28px rgba(30,42,53,0.1);
+  border: 1px solid rgba(74,127,165,0.15);
+  padding: 32px 28px;
+  margin-top: 56px;
+  text-align: center;
+}
+.clinic-logo-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--rain-dark);
+  margin-bottom: 4px;
+}
+.clinic-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.clinic-divider {
+  width: 40px; height: 2px;
+  background: var(--teal-accent);
+  margin: 0 auto 20px;
+  border-radius: 2px;
+}
+.clinic-info {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 2;
+  margin-bottom: 24px;
+}
+.clinic-info span { color: var(--text-muted); }
+.clinic-link {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--teal-accent) 0%, var(--rain-blue) 100%);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 13px 36px;
+  border-radius: 50px;
+  letter-spacing: 0.04em;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(62,143,168,0.3);
+}
+.clinic-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(62,143,168,0.4);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--rain-dark);
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  padding: 28px 24px;
+  font-size: 0.78rem;
+  position: relative; z-index: 1;
+  letter-spacing: 0.03em;
+}
+
+/* ── 스크롤 reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.on { opacity: 1; transform: translateY(0); }
+
+/* ── 모바일 ── */
+@media (max-width: 600px) {
+  .hero { padding: 70px 20px 52px; }
+  .article-wrap { padding: 52px 20px 64px; }
+  .tips-box { padding: 28px 22px; }
+  .cause-card { padding: 18px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 빗방울 캔버스 -->
+<canvas id="rain-canvas"></canvas>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-emoji">🌧️</span>
+  <p class="hero-eyebrow">속건강내과의원 건강 칼럼</p>
+  <h1>비 오는 날,<br><em>유난히 더 지치는</em> 이유</h1>
+  <p class="hero-desc">장마철에 우리 몸이 보내는 신호,<br>그 이유와 회복의 방법을 알려드립니다.</p>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- 본문 -->
+<div class="article-wrap">
+
+  <!-- 도입부 -->
+  <div class="opening-quote reveal">
+    <p>아침부터 빗소리가 잔잔히 창문을 두드립니다.<br>
+    어제는 같은 시간에 일어났는데도, 오늘은 몸이 더 무겁습니다.<br><br>
+    "왜 이렇게 피곤하지…?"<br><br>
+    커피를 한 모금 마셔보지만, 머리는 맑아지지 않습니다.</p>
+  </div>
+
+  <p class="body-para reveal">
+    출근길 엘리베이터 안에서도, 사무실 책상 앞에서도 오늘따라 사람들의 표정이 모두 비슷합니다.
+    조금씩 늘어진 어깨, 느려진 말투, 자꾸만 나오는 하품.
+  </p>
+
+  <p class="body-para reveal">
+    사실 이 피로는 단순히 '기분'의 문제가 아닙니다.
+    <strong>우리 몸이 장마라는 환경에 적응하지 못해 보내는 신호</strong>입니다.
+  </p>
+
+  <div class="divider reveal"><span></span><i>· · ·</i><span></span></div>
+
+  <!-- 원인 -->
+  <div class="section-heading reveal">
+    <div class="dot"></div>
+    <h2>장마철 피로의 세 가지 원인</h2>
+  </div>
+
+  <div class="cause-cards">
+    <div class="cause-card reveal">
+      <div class="cause-icon">💧</div>
+      <div>
+        <h3>높아진 습도 — 열이 빠져나가지 못한다</h3>
+        <p>비가 오기 시작하면 공기 속 습도가 올라갑니다. 몸은 땀을 통해 열을 내보내야 하는데, 습기가 많아지면 땀이 잘 마르지 않습니다. 결국 몸속 열이 빠져나가지 못하고, 그 작은 차이가 쌓여 묘한 피로감으로 느껴집니다.</p>
+      </div>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">☁️</div>
+      <div>
+        <h3>줄어든 햇빛 — 몸의 리듬이 흔들린다</h3>
+        <p>햇빛이 줄어들면 우리 몸의 리듬을 조절하는 신호도 약해집니다. 아침이 와도 몸은 아직 밤이라고 착각하고, 밤이 되어도 깊이 잠들지 못합니다. 그래서 장마철에는 "많이 잤는데도 피곤한 상태"가 반복됩니다.</p>
+      </div>
+    </div>
+    <div class="cause-card reveal">
+      <div class="cause-icon">🚶</div>
+      <div>
+        <h3>줄어든 움직임 — 몸이 둔해진다</h3>
+        <p>비를 핑계로 바깥 활동은 줄어들고, 움직임이 줄어들수록 몸은 더 무거워집니다. 몸은 정직합니다. 쓰지 않으면, 바로 둔해집니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider reveal"><span></span><i>· · ·</i><span></span></div>
+
+  <!-- 실천법 -->
+  <div class="section-heading reveal">
+    <div class="dot"></div>
+    <h2>장마철 피로를 이기는 작은 습관</h2>
+  </div>
+
+  <p class="body-para reveal">
+    장마철 피로를 이기는 방법은 의외로 단순합니다. 특별한 치료가 아니라,
+    몸의 리듬을 다시 "원래 자리로 돌려놓는 작은 습관"입니다.
+  </p>
+
+  <div class="tips-box reveal">
+    <h3>오늘부터 실천할 수 있는 3가지</h3>
+    <ul class="tips-list">
+      <li>
+        <div class="check">✓</div>
+        <span>아침에 잠깐이라도 <strong style="color:#fff;">밝은 빛</strong> 보기 — 창가에 앉거나, 잠깐 밖으로 나가보세요</span>
+      </li>
+      <li>
+        <div class="check">✓</div>
+        <span><strong style="color:#fff;">수면 시간 일정하게</strong> 유지하기 — 기상 시간만 고정해도 리듬이 돌아옵니다</span>
+      </li>
+      <li>
+        <div class="check">✓</div>
+        <span><strong style="color:#fff;">따뜻한 음식</strong>으로 몸의 순환 돕기 — 국물 요리, 생강차 한 잔이 도움이 됩니다</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- 경고 -->
+  <div class="warning-box reveal">
+    <div class="warn-icon">⚠️</div>
+    <p>
+      비는 피할 수 없지만, 그 속에서 몸이 무너지는 것은 막을 수 있습니다.<br><br>
+      만약 이런 피로가 <strong>2~3일 이상 계속되면서 두통, 몸살, 식욕 저하</strong>까지 함께 나타난다면,
+      단순한 날씨 문제가 아니라 몸의 균형이 더 크게 흔들리고 있다는 신호일 수 있습니다.
+      그때는 가까운 병원에서 한 번 상태를 확인해 보는 것이 좋습니다.
+    </p>
+  </div>
+
+  <!-- 마무리 -->
+  <div class="closing reveal">
+    장마는 지나갑니다.<br>
+    하지만 그 시간을 어떻게 보내느냐에 따라<br>
+    몸의 상태는 완전히 달라집니다.
+  </div>
+
+  <!-- 병원 카드 -->
+  <div class="clinic-card reveal">
+    <div class="clinic-logo-text">속건강내과의원</div>
+    <div class="clinic-sub">SOK INTERNAL MEDICINE CLINIC</div>
+    <div class="clinic-divider"></div>
+    <div class="clinic-info">
+      <span>대표원장</span> &nbsp;김 민 대<br>
+      <span>전화</span> &nbsp;051-746-6002<br>
+      <span>주소</span> &nbsp;부산 해운대구 해운대로 407 신세계프라자 403호<br>
+      <span>지하철</span> &nbsp;2호선 벡스코역 2번 출구 100m
+    </div>
+    <a class="clinic-link"
+       href="https://kidori777.github.io/test/%EC%86%8D%EA%B1%B4%EA%B0%95%EB%82%B4%EA%B3%BC%20%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80.html"
+       target="_blank" rel="noopener">
+      병원 홈페이지 방문하기 →
+    </a>
+  </div>
+
+</div><!-- /article-wrap -->
+
+<footer>
+  © 2025 속건강내과의원 All Rights Reserved &nbsp;|&nbsp; 부산 해운대구 해운대로 407 신세계프라자 403호
+</footer>
+
+<script>
+// ── 빗방울 애니메이션 ──
+const canvas = document.getElementById('rain-canvas');
+const ctx = canvas.getContext('2d');
+let drops = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  initDrops();
+}
+
+function initDrops() {
+  drops = [];
+  const count = Math.floor(canvas.width / 8);
+  for (let i = 0; i < count; i++) {
+    drops.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      len: Math.random() * 18 + 8,
+      speed: Math.random() * 3 + 2,
+      opacity: Math.random() * 0.4 + 0.1
+    });
+  }
+}
+
+function drawRain() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drops.forEach(d => {
+    ctx.beginPath();
+    ctx.moveTo(d.x, d.y);
+    ctx.lineTo(d.x - d.len * 0.15, d.y + d.len);
+    ctx.strokeStyle = `rgba(180,210,230,${d.opacity})`;
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
+    d.y += d.speed;
+    if (d.y > canvas.height) {
+      d.y = -d.len;
+      d.x = Math.random() * canvas.width;
+    }
+  });
+  requestAnimationFrame(drawRain);
+}
+
+window.addEventListener('resize', resize);
+resize();
+drawRain();
+
+// ── 스크롤 reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.12 });
+reveals.forEach(r => obs.observe(r));
+setTimeout(() => reveals.forEach(r => r.classList.add('on')), 2500);
+</script>
+</body>
+</html>

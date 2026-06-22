@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>베드로의 생애와 신앙적 변모</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0E0D0B;
+  --bg2:       #161410;
+  --bg3:       #1E1B16;
+  --gold:      #C9A84C;
+  --gold-dim:  #8A6E30;
+  --crimson:   #9B2335;
+  --stone:     #B0A898;
+  --linen:     #EDE8DF;
+  --warm-mid:  #7A6E60;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--linen);
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 400;
+  line-height: 1.95;
+  overflow-x: hidden;
+}
+
+/* ══ HERO ══ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px 100px;
+  overflow: hidden;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+}
+
+.series-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  letter-spacing: 3.5px;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.35);
+  padding: 5px 18px;
+  margin-bottom: 52px;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--linen);
+  margin-bottom: 6px;
+}
+
+.hero h1 .sub-name {
+  display: block;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 4px;
+  margin-top: 10px;
+}
+
+.hero-desc {
+  margin-top: 32px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--stone);
+  line-height: 2;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-keyword-row {
+  margin-top: 44px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.keyword {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: var(--gold-dim);
+  border: 1px solid rgba(138,110,48,0.4);
+  padding: 5px 14px;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.scroll-hint span {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  color: var(--warm-mid);
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, var(--warm-mid), transparent);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 1; }
+}
+
+/* ══ CONTENT WRAPPER ══ */
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+/* ══ SECTION ══ */
+.section {
+  padding-top: 80px;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(201,168,76,0.18);
+}
+
+.section-num {
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgba(201,168,76,0.18);
+  line-height: 1;
+  flex-shrink: 0;
+  letter-spacing: -2px;
+}
+
+.section-titles {}
+
+.section-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  color: var(--crimson);
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.section-title {
+  font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+  font-weight: 700;
+  color: var(--linen);
+  line-height: 1.35;
+}
+
+.section-subtitle {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--stone);
+  margin-top: 4px;
+  letter-spacing: 0.3px;
+}
+
+/* ══ BODY TEXT ══ */
+.body-text {
+  font-size: 0.93rem;
+  font-weight: 300;
+  color: rgba(237,232,223,0.8);
+  line-height: 2;
+  margin-bottom: 20px;
+  white-space: pre-line;
+}
+
+/* ══ SUB-SECTION (bullet items) ══ */
+.sub-section {
+  margin: 28px 0;
+  padding-left: 24px;
+  border-left: 2px solid rgba(201,168,76,0.25);
+}
+
+.sub-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.sub-body {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: rgba(237,232,223,0.75);
+  line-height: 2;
+  white-space: pre-line;
+}
+
+/* ══ VERSE BOX ══ */
+.verse-box {
+  background: rgba(30,27,22,0.7);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-left: 3px solid var(--gold-dim);
+  padding: 18px 22px;
+  margin: 16px 0;
+  font-size: 0.92rem;
+  color: rgba(237,232,223,0.92);
+  line-height: 1.9;
+}
+
+.verse-ref {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.77rem;
+  color: var(--gold);
+  letter-spacing: 0.8px;
+  font-style: normal;
+}
+
+/* ══ INSIGHT BOX ══ */
+.insight {
+  background: rgba(155,35,53,0.1);
+  border-top: 1px solid rgba(155,35,53,0.3);
+  border-bottom: 1px solid rgba(155,35,53,0.15);
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: rgba(220,160,170,0.9);
+  line-height: 1.8;
+}
+
+/* ══ GROWTH STEPS ══ */
+.growth-steps {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background: rgba(30,27,22,0.6);
+  border: 1px solid rgba(201,168,76,0.1);
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: rgba(237,232,223,0.82);
+  line-height: 1.6;
+}
+
+.step-item.highlight {
+  border-color: rgba(201,168,76,0.35);
+  background: rgba(201,168,76,0.07);
+}
+
+.step-item.highlight .step-text {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ══ DIVIDER ══ */
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.2), transparent);
+  margin: 60px 0 0;
+}
+
+/* ══ CLOSING ══ */
+.closing {
+  background: linear-gradient(to bottom, var(--bg), var(--bg2));
+  padding: 100px 28px;
+  text-align: center;
+}
+
+.closing-inner { max-width: 680px; margin: 0 auto; }
+
+.closing-eyebrow {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--warm-mid);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.closing h2 {
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: var(--linen);
+  line-height: 1.3;
+  margin-bottom: 36px;
+}
+
+.closing h2 em {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.closing-body {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--stone);
+  line-height: 2.1;
+  margin-bottom: 28px;
+}
+
+.closing-line {
+  width: 50px;
+  height: 1px;
+  background: var(--gold-dim);
+  opacity: 0.4;
+  margin: 32px auto;
+}
+
+.closing-final {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgba(237,232,223,0.85);
+  line-height: 2;
+}
+
+.closing-final .gold { color: var(--gold); }
+
+/* ══ FOOTER ══ */
+footer {
+  background: var(--bg);
+  padding: 26px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+footer p {
+  font-size: 0.77rem;
+  color: rgba(255,255,255,0.22);
+  letter-spacing: 1px;
+}
+
+/* ══ MOBILE ══ */
+@media (max-width: 600px) {
+  .section-num { font-size: 2rem; }
+  .sub-section { padding-left: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section { opacity: 1; transform: none; transition: none; }
+  .scroll-line { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <div class="series-tag">성경 인물 연구 · 부산교회</div>
+    <h1>베드로
+      <span class="sub-name">Petros · 반석</span>
+    </h1>
+    <p class="hero-desc">베드로의 생애와 신앙적 변모<br>어부에서 교회 기둥으로의 여정</p>
+    <div class="hero-keyword-row">
+      <span class="keyword">부르심</span>
+      <span class="keyword">연단</span>
+      <span class="keyword">실패</span>
+      <span class="keyword">회복</span>
+      <span class="keyword">사역</span>
+      <span class="keyword">신성한 본성</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══ CONTENT ══ -->
+<div class="content">
+
+  <!-- 1. 서론 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-titles">
+        <span class="section-label">서론 · Introduction</span>
+        <h2 class="section-title">하나님의 경륜 안에서<br>변화의 전형이 된 시몬 베드로</h2>
+      </div>
+    </div>
+    <p class="body-text">성경을 읽어 보면 베드로라는 인물은 단순한 제자 이상의 전략적 위치를 점유합니다. 그의 생애는 평범한 천성을 지닌 인간이 하나님의 경륜(Economy) 안에서 어떻게 거룩한 사도로 재구성될 수 있는지를 보여주는 전형(Archetype)입니다.</p>
+    <p class="body-text">베드로의 부르심과 연단, 그리고 사역의 확장은 개인의 영적 성장기를 넘어, 오순절 성령의 경륜적인 충일을 통해 하나님의 통치가 어떻게 인간의 연약함을 뚫고 실현되는지를 증명합니다. 갈릴리의 어부 '시몬'이 교회의 '반석'이 되기까지의 과정은, 한 존재의 정체성이 하나님의 목적에 의해 어떻게 재정의되고 승화되는지를 보여주는 장엄한 서사입니다.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 2. 부르심 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-titles">
+        <span class="section-label">부르심 · Calling</span>
+        <h2 class="section-title">부르심과 정체성의 확립</h2>
+        <span class="section-subtitle">'시몬'에서 '게바'로의 존재론적 전회</span>
+      </div>
+    </div>
+    <p class="body-text">베드로의 여정은 생업의 현장인 갈릴리 바다에서 시작됩니다. 주님께서 그를 부르신 행위는 단순한 동역의 요청이 아니라, 그의 존재를 근본적으로 재설계하는 주권적 선언이었습니다.</p>
+
+    <div class="sub-section">
+      <p class="sub-title">이름의 변화와 예언적 계시</p>
+      <p class="sub-body">마태복음 4장에서 주님은 그를 "사람을 얻는 어부"로 부르시며 사명적 비전을 제시하셨습니다. 그러나 요한복음 1장 42절은 더 깊은 정체성의 변화를 보여줍니다. 안드레의 인도로 주님 앞에 선 그에게 예수께서는 이렇게 선언하셨습니다.</p>
+      <div class="verse-box">
+        "그대는 요한의 아들 시몬입니다. 그대가 게바(베드로)라 불릴 것입니다."
+        <span class="verse-ref">요한복음 1:42</span>
+      </div>
+      <p class="sub-body">이는 시몬이라는 '천성적 정체성'을 '게바(반석)'라는 '변화된 정체성'으로 치환하신 것으로, 훗날 그가 교회의 기초석이 될 것임을 미리 내다본 예언적 존재 규명이었습니다.</p>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">즉각적인 결단의 무게</p>
+      <p class="sub-body">그가 즉시 그물을 버리고 따랐던 결단(마 4:20)은 단순히 직업의 전환이 아니었습니다. 이는 기존의 생존 체계를 포기하고, 주님의 말씀이라는 새로운 통치 원리 안으로 자신을 헌신한 존재론적 결단이었습니다.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 3. 훈련 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-titles">
+        <span class="section-label">훈련 · Training</span>
+        <h2 class="section-title">훈련과 계시의 과정</h2>
+        <span class="section-subtitle">인식 체계의 재편과 반석의 연단</span>
+      </div>
+    </div>
+    <p class="body-text">베드로는 공생애 기간 동안 초자연적 사건들을 통과하며 자신의 인간적 인식 체계를 해체하고 신성한 계시의 체계를 받아들이는 훈련을 받았습니다.</p>
+
+    <div class="sub-section">
+      <p class="sub-title">물 위를 걷는 경험과 신뢰의 도약</p>
+      <p class="sub-body">풍랑 속에서 주님을 바라보며 물 위를 걷던 사건(마 14장)은 베드로에게 '두려움'이라는 육신적 한계와 '믿음'이라는 영적 권능 사이의 갈등을 경험하게 했습니다.</p>
+      <div class="verse-box">
+        "왜 의심하였습니까?"
+        <span class="verse-ref">마태복음 14:31</span>
+      </div>
+      <p class="sub-body">주님께서 내미신 손은, 베드로를 단순한 기적 체험자가 아닌, 오직 주님께 고정된 시선만을 신뢰하는 '반석'으로 다듬어 가시는 연단의 과정이었습니다.</p>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">가이사랴 빌립보의 고백</p>
+      <p class="sub-body">베드로가 선포한 "주님은 그리스도이시요, 살아 계신 하나님의 아들"이라는 고백은 그가 가진 '피와 살(인간적 지혜)'의 산물이 아니었습니다. 이는 "하늘에 계신 아버지의 계시"에 의한 것이었으며(마 16:17), 주님은 이 계시 위에 자신의 교회를 건축하겠다고 선언하심으로써 확증하셨습니다.</p>
+      <div class="verse-box">
+        "그대는 베드로입니다. 내가 이 반석 위에 내 교회를 건축할 것입니다."
+        <span class="verse-ref">마태복음 16:18</span>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">변화산에서의 교정</p>
+      <p class="sub-body">변화산에서 모세와 엘리야를 위해 초막을 짓겠다는 베드로의 제안(마 17:4)은 그의 인간적 열정이 주님의 신성을 오해한 결과였습니다.</p>
+      <div class="verse-box">
+        "그는 나의 사랑하는 아들이니... 너희는 그의 말을 들어라!"
+        <span class="verse-ref">마태복음 17:5</span>
+      </div>
+      <p class="sub-body">율법과 선지자를 넘어서는 그리스도의 유일한 권위를 베드로의 마음에 각인시키며 그의 종교적 열심을 교정하셨습니다.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 4. 실패와 회복 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-titles">
+        <span class="section-label">실패와 회복 · Failure & Restoration</span>
+        <h2 class="section-title">실패와 회복</h2>
+        <span class="section-subtitle">자아의 파쇄를 통한 사명의 재건</span>
+      </div>
+    </div>
+    <p class="body-text">베드로의 '통곡의 밤'은 그의 천성적 자아가 완전히 파쇄되고, 오직 주님의 긍휼 위에 사도성이 재건되는 필수적인 통과의례였습니다.</p>
+
+    <div class="sub-section">
+      <p class="sub-title">혈기와 육신적 의지의 종말</p>
+      <p class="sub-body">겟세마네에서 칼을 빼어 말고의 귀를 자른 행위(요 18:10)는 베드로의 육체적 열심이 가진 위험성을 단적으로 보여줍니다. 이는 칼로써는 "아버지께서 주신 잔"을 마시는 주님의 사역에 동참할 수 없음을 시사합니다.</p>
+      <div class="verse-box">
+        "그 칼을 칼집에 꽂으십시오."
+        <span class="verse-ref">요한복음 18:11</span>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">세 번의 부인과 절망의 끝</p>
+      <p class="sub-body">닭이 울기 전 세 번이나 주님을 저주하고 부인한 사건(마 26장)은 베드로가 가졌던 인간적 호기와 자신감을 철저히 무너뜨렸습니다.</p>
+      <div class="verse-box">
+        "나는 그 사람을 모르오!"
+        <span class="verse-ref">마태복음 26:72</span>
+      </div>
+      <div class="verse-box">
+        "밖으로 나가 슬피 울었다."
+        <span class="verse-ref">마태복음 26:75</span>
+      </div>
+      <p class="sub-body">밖으로 나가 흘린 슬픈 통곡은 자기 의지에 기반한 신앙의 죽음을 의미했습니다.</p>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">디베랴 바닷가의 회복과 위임</p>
+      <p class="sub-body">부활하신 주님은 실패한 베드로를 찾아와 세 번 물으셨습니다. 이는 그의 세 번의 부인을 세 번의 사랑 고백으로 치유하시는 신성한 배려였습니다.</p>
+      <div class="verse-box">
+        "요한의 아들 시몬이여, 이 사람들보다 그대가 나를 더 사랑하십니까?"
+        <span class="verse-ref">요한복음 21:15</span>
+      </div>
+      <div class="verse-box">
+        "내 양들을 먹이십시오."
+        <span class="verse-ref">요한복음 21:17</span>
+      </div>
+      <p class="sub-body">주님은 자신의 의지로 살던 "젊었을 때"를 지나, 주님의 뜻에 이끌려 "팔을 벌릴" 순교적 삶을 예고하시며 목자의 사명을 위임하셨습니다.</p>
+      <div class="verse-box">
+        "내가 진실로 진실로 그대에게 말합니다. 그대가 젊었을 때에는 스스로 허리띠를 동여매고 그대가 원하는 곳을 다녔으나, 그대가 늙어서는 그대의 팔을 벌릴 것이고, 다른 사람이 그대에게 띠를 동여매어 그대가 원하지 않는 곳으로 데려갈 것입니다."
+        <span class="verse-ref">요한복음 21:18</span>
+      </div>
+      <div class="insight">베드로의 '통곡의 밤'은 파괴가 아니라 재건을 위한 필수적인 통과의례였습니다. 자아의 파쇄 없이 믿음은 세워질 수 없었습니다.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 5. 사역 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-titles">
+        <span class="section-label">사역 · Ministry</span>
+        <h2 class="section-title">교회의 기둥으로서의 사역</h2>
+        <span class="section-subtitle">복음의 확장과 실현</span>
+      </div>
+    </div>
+    <p class="body-text">성령의 권능을 입은 베드로는 유대적 한계를 넘어 이방인에게까지 하나님의 통치를 확장하는 사역의 중추가 되었습니다.</p>
+
+    <div class="sub-section">
+      <p class="sub-title">오순절 메시지의 신학적 권위</p>
+      <p class="sub-body">베드로는 시편 16편과 110편을 인용하며 다윗의 예언이 예수의 부활과 승천을 통해 성취되었음을 논리적으로 증언했습니다.</p>
+      <div class="verse-box">
+        "여러분이 십자가에 못 박은 이 예수님을 하나님께서 주님과 그리스도가 되게 하셨습니다."
+        <span class="verse-ref">사도행전 2:36</span>
+      </div>
+      <p class="sub-body">이 선포는 성령의 경륜적 충일 속에서 삼천 명의 회개를 이끌어냈습니다.</p>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">예수의 이름과 사도적 표적</p>
+      <p class="sub-body">성전 미문의 장애인을 "나사렛 예수 그리스도의 이름"으로 일으킨 기적(행 3장)은 사도적 권위가 베드로 개인이 아닌 주님의 이름에 있음을 천명한 사건이었습니다.</p>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">고넬료 사건과 이방인 구원의 문</p>
+      <p class="sub-body">베드로는 보자기 환상을 통해 "하나님께서 깨끗하게 하신 것을 속되다고 하지 마라"는 음성을 듣고 유대교적 편견을 탈피했습니다.</p>
+      <div class="verse-box">
+        "하나님은 사람을 외모로 판단하지 않으십니다."
+        <span class="verse-ref">사도행전 10:34</span>
+      </div>
+      <p class="sub-body">이 깨달음은 고넬료의 집에 복음의 문을 여는 결정적 계기가 되었습니다.</p>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">예루살렘 공회의 결론</p>
+      <p class="sub-body">할례 분쟁에서 베드로는 "우리가 멜 수 없었던 멍에"를 지적하며, 유대인이나 이방인이나 동일하게 "주 예수님의 은혜로 구원받는다"는 은혜의 복음을 정립함으로써 교회의 보편성을 확립했습니다.</p>
+      <div class="verse-box">
+        "우리는 주 예수님의 은혜로 구원받는다고 믿습니다."
+        <span class="verse-ref">사도행전 15:11</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 6. 신학 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-titles">
+        <span class="section-label">신학 · Theology</span>
+        <h2 class="section-title">베드로의 경륜적 이상</h2>
+        <span class="section-subtitle">고난을 넘어서는 영광과 신성한 성품</span>
+      </div>
+    </div>
+    <p class="body-text">생애 마지막에 기록한 베드로 전·후서는 한 어부가 도달한 신앙의 정수와 영적 조망을 보여줍니다.</p>
+
+    <div class="sub-section">
+      <p class="sub-title">고난과 보배로운 믿음</p>
+      <p class="sub-body">베드로는 그리스도인의 고난을 "불로 단련해도 없어지는 금보다 훨씬 더 보배로운 믿음의 시련"으로 정의했습니다. 고난은 이상한 일이 아니라 그리스도의 영광에 참여하기 위한 기쁨의 통로임을 역설했습니다.</p>
+      <div class="verse-box">
+        "여러분의 믿음의 시련은 불로 단련해도 없어지고 마는 금을 단련하는 것보다 훨씬 더 보배로워서, 예수 그리스도께서 나타나실 때에 칭찬과 영광과 존귀를 얻게 합니다."
+        <span class="verse-ref">베드로전서 1:7</span>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">신성한 본성에의 참여</p>
+      <p class="sub-body">믿는 이들이 정욕으로 부패된 세상에서 벗어나 "신성한 본성에 동참하는 사람들"이 되어야 함을 강조하며 다음과 같은 성장 단계를 제시했습니다(벧후 1:5-7).</p>
+      <div class="verse-box">
+        "그분은 이 영광과 미덕을 통하여 보배롭고 지극히 큰 약속들을 우리에게 주셨습니다. 그것은 여러분이 이 약속들을 통하여, 세상에서 정욕으로 부패되는 데서 벗어나, 신성한 본성에 동참하는 사람들이 되도록 하시려는 것이었습니다."
+        <span class="verse-ref">베드로후서 1:4</span>
+      </div>
+      <div class="growth-steps">
+        <div class="step-item"><div class="step-num">1</div><div class="step-text">믿음에 <strong>미덕</strong>을</div></div>
+        <div class="step-item"><div class="step-num">2</div><div class="step-text">미덕에 <strong>지식</strong>을</div></div>
+        <div class="step-item"><div class="step-num">3</div><div class="step-text">지식에 <strong>자제</strong>를</div></div>
+        <div class="step-item"><div class="step-num">4</div><div class="step-text">자제에 <strong>인내</strong>를</div></div>
+        <div class="step-item"><div class="step-num">5</div><div class="step-text">인내에 <strong>경건</strong>을</div></div>
+        <div class="step-item"><div class="step-num">6</div><div class="step-text">경건에 <strong>형제 사랑</strong>을</div></div>
+        <div class="step-item highlight"><div class="step-num">7</div><div class="step-text">형제 사랑에 <strong>신성한 사랑(Love)</strong>을 더함</div></div>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <p class="sub-title">산 소망과 샛별의 비전</p>
+      <p class="sub-body">베드로는 "썩지 않고 더러워지지 않는 유업"을 바라보는 산 소망을 전하며 권면했습니다.</p>
+      <div class="verse-box">
+        "또한 우리에게는 신언자가 말한 더 확실한 말씀이 있습니다. 어두운 곳을 비추는 등불에 주의를 기울이는 것처럼, 여러분은 날이 밝고 샛별이 여러분의 마음속에 떠오를 때까지, 이 말씀에 주의를 기울이는 것이 좋습니다."
+        <span class="verse-ref">베드로후서 1:19</span>
+      </div>
+      <p class="sub-body">이는 그의 영적 시선이 이미 영원한 하나님의 왕국을 향해 있음을 보여줍니다.</p>
+      <div class="insight">생애 말년의 베드로는 흔들리는 제자가 아니었습니다. 그는 자신의 장막을 벗을 때가 임박했음을 알고도 흔들리지 않는 평안 가운데 성도들을 격려하는 목자였습니다.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+</div><!-- /content -->
+
+<!-- ══ CLOSING ══ -->
+<section class="closing">
+  <div class="closing-inner">
+    <span class="closing-eyebrow">결론 · Conclusion</span>
+    <h2>어부 시몬에서<br><em>목자 베드로</em>로의 성취</h2>
+    <p class="closing-body">
+      베드로의 일생은 한 인간의 혈기와 결핍이 하나님의 은혜 안에서 어떻게 신성한 본성에 참여하는 거목으로 성장할 수 있는지를 보여주는 장엄한 대서사시입니다.
+    </p>
+    <div class="closing-line"></div>
+    <p class="closing-body">
+      갈릴리의 어부 '시몬'은 결국 주님의 어린 양들을 먹이는 목자이자, 교회의 흔들리지 않는 '베드로'로 완성되었습니다.
+    </p>
+    <p class="closing-body">
+      이 경이로운 변모는 베드로 개인의 역량이 아니라, '그리스도의 보배로운 피'와 '썩지 않는 씨인 하나님의 살아 있는 말씀'이 이룬 승리였습니다.
+    </p>
+    <div class="closing-line"></div>
+    <p class="closing-final">
+      그의 발자취는 오늘날 우리에게도<br>
+      자기 파쇄를 넘어 <span class="gold">신성한 공급</span>을 통해<br>
+      영원한 하나님의 왕국에 넉넉히 들어가는<br>
+      신앙의 참된 지표를 제시하고 있습니다.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>성경 인물 시리즈 &nbsp;·&nbsp; 부산교회 &nbsp;·&nbsp; kidori777.github.io/Bible</p>
+</footer>
+
+<script>
+// ── 히어로 캔버스: 불꽃 + 돌 질감 ──
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// 파티클 (불씨)
+const particles = Array.from({ length: 60 }, () => ({
+  x: Math.random(),
+  y: Math.random() * 0.6 + 0.4,
+  vy: -(Math.random() * 0.0005 + 0.0002),
+  vx: (Math.random() - 0.5) * 0.0002,
+  size: Math.random() * 2.5 + 0.5,
+  alpha: Math.random() * 0.6 + 0.1,
+  life: Math.random()
+}));
+
+let t = 0;
+function draw() {
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  // 배경
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#070605');
+  bg.addColorStop(0.5, '#0E0D0B');
+  bg.addColorStop(1, '#161410');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // 하단 빛 기둥 (성전 느낌)
+  const pillar = ctx.createRadialGradient(W * 0.5, H, 0, W * 0.5, H, H * 0.6);
+  pillar.addColorStop(0, 'rgba(201,168,76,0.08)');
+  pillar.addColorStop(0.4, 'rgba(155,35,53,0.04)');
+  pillar.addColorStop(1, 'transparent');
+  ctx.fillStyle = pillar;
+  ctx.fillRect(0, 0, W, H);
+
+  // 수평선 상단 희미한 빛
+  const horizon = ctx.createLinearGradient(0, H * 0.55, 0, H * 0.75);
+  horizon.addColorStop(0, 'rgba(201,168,76,0.05)');
+  horizon.addColorStop(1, 'transparent');
+  ctx.fillStyle = horizon;
+  ctx.fillRect(0, H * 0.55, W, H * 0.2);
+
+  // 불씨 파티클
+  particles.forEach(p => {
+    p.life += 0.004;
+    if (p.life > 1) {
+      p.x = Math.random();
+      p.y = Math.random() * 0.15 + 0.8;
+      p.vy = -(Math.random() * 0.0006 + 0.0002);
+      p.vx = (Math.random() - 0.5) * 0.0003;
+      p.size = Math.random() * 2.5 + 0.5;
+      p.alpha = Math.random() * 0.5 + 0.15;
+      p.life = 0;
+    }
+    p.x += p.vx;
+    p.y += p.vy;
+
+    const fade = p.life < 0.2 ? p.life / 0.2 : p.life > 0.7 ? 1 - (p.life - 0.7) / 0.3 : 1;
+    ctx.beginPath();
+    ctx.arc(p.x * W, p.y * H, p.size, 0, Math.PI * 2);
+    const col = p.y < 0.7 ? `rgba(201,168,76,${p.alpha * fade})` : `rgba(155,35,53,${p.alpha * fade * 0.6})`;
+    ctx.fillStyle = col;
+    ctx.fill();
+  });
+
+  // 미세 별
+  ctx.globalAlpha = 0.4;
+  for (let i = 0; i < 80; i++) {
+    const sx = ((i * 137.5 + Math.sin(t * 0.01 + i) * 2) % 1 + 1) % 1;
+    const sy = ((i * 73.1) % 0.5);
+    const sa = 0.2 + Math.sin(t * 0.02 + i * 0.7) * 0.15;
+    ctx.beginPath();
+    ctx.arc(sx * W, sy * H, 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(201,168,76,${sa})`;
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  t++;
+  requestAnimationFrame(draw);
+}
+draw();
+
+// ── 스크롤 등장 ──
+const sections = document.querySelectorAll('.section');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
