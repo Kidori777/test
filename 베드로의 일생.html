@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>베드로 — 시몬이 반석이 되기까지</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --night-sea: #0D1B2A;
+    --deep-blue: #1B3A5C;
+    --galilee:   #3A6F9A;
+    --sand-gold: #C8A96E;
+    --linen:     #F0EDE6;
+    --flame:     #E06840;
+    --soft-text: #8BA8C0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night-sea);
+    color: var(--linen);
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 400;
+    line-height: 1.9;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px 120px;
+    overflow: hidden;
+  }
+
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+  }
+
+  .series-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--sand-gold);
+    border: 1px solid rgba(200,169,110,0.4);
+    padding: 6px 18px;
+    margin-bottom: 48px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--linen);
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 span { color: var(--sand-gold); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-weight: 300;
+    color: var(--soft-text);
+    margin-top: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-verse {
+    margin-top: 48px;
+    padding: 24px 32px;
+    border-left: 3px solid var(--flame);
+    text-align: left;
+    background: rgba(255,255,255,0.04);
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-verse p {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(240,237,230,0.88);
+    line-height: 1.9;
+  }
+
+  .hero-verse cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.8rem;
+    color: var(--sand-gold);
+    letter-spacing: 1px;
+    font-style: normal;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scroll-hint span {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--soft-text);
+    text-transform: uppercase;
+  }
+
+  .scroll-arrow {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--soft-text), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50%       { opacity: 1; }
+  }
+
+  /* ── JOURNEY ── */
+  .journey {
+    position: relative;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  .journey-title {
+    text-align: center;
+    padding: 80px 0 60px;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-weight: 600;
+    color: var(--sand-gold);
+    letter-spacing: 1px;
+  }
+
+  .timeline-line {
+    position: absolute;
+    left: calc(50% + 12px);
+    top: 180px;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--galilee), transparent);
+    transform: translateX(-50%);
+    z-index: 0;
+  }
+
+  /* ── CHAPTER BLOCK ── */
+  .chapter {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 64px 1fr;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .chapter.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* odd: content left */
+  .chapter.left .chapter-content { grid-column: 1; text-align: right; padding-right: 36px; }
+  .chapter.left .chapter-node    { grid-column: 2; }
+  .chapter.left .chapter-empty   { grid-column: 3; }
+
+  /* even: content right */
+  .chapter.right .chapter-empty   { grid-column: 1; }
+  .chapter.right .chapter-node    { grid-column: 2; }
+  .chapter.right .chapter-content { grid-column: 3; text-align: left; padding-left: 36px; }
+
+  .chapter-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+  }
+
+  .node-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 2px solid var(--galilee);
+    background: var(--night-sea);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--sand-gold);
+    flex-shrink: 0;
+    z-index: 2;
+    transition: border-color 0.4s, background 0.4s;
+  }
+
+  .chapter.visible .node-circle {
+    border-color: var(--sand-gold);
+    background: rgba(200,169,110,0.1);
+  }
+
+  .chapter-content { padding-top: 4px; padding-bottom: 20px; }
+
+  .chapter-label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: var(--flame);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .chapter-title {
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+    font-weight: 700;
+    color: var(--linen);
+    line-height: 1.35;
+    margin-bottom: 18px;
+  }
+
+  .chapter-body {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: rgba(240,237,230,0.78);
+    line-height: 1.95;
+    margin-bottom: 14px;
+    white-space: pre-line;
+  }
+
+  /* 성경구절 박스 */
+  .verse-box {
+    background: rgba(27,58,92,0.35);
+    border-left: 2px solid var(--galilee);
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 0.9rem;
+    color: rgba(240,237,230,0.92);
+    line-height: 1.85;
+  }
+
+  .chapter.left .verse-box {
+    border-left: none;
+    border-right: 2px solid var(--galilee);
+  }
+
+  .verse-ref {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--sand-gold);
+    letter-spacing: 0.5px;
+  }
+
+  .insight {
+    display: block;
+    background: rgba(224,104,64,0.1);
+    border-top: 1px solid rgba(224,104,64,0.28);
+    padding: 10px 14px;
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: var(--flame);
+    line-height: 1.75;
+    margin-top: 10px;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    background: linear-gradient(to bottom, var(--night-sea), var(--deep-blue));
+    padding: 100px 24px;
+    text-align: center;
+  }
+
+  .closing-inner { max-width: 620px; margin: 0 auto; }
+
+  .closing-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--soft-text);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .closing h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--linen);
+    line-height: 1.3;
+    margin-bottom: 32px;
+  }
+
+  .closing h2 em {
+    color: var(--sand-gold);
+    font-style: normal;
+  }
+
+  .closing-body {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(240,237,230,0.75);
+    line-height: 2;
+    margin-bottom: 36px;
+  }
+
+  .closing-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--sand-gold);
+    opacity: 0.35;
+    margin: 0 auto 36px;
+  }
+
+  .closing-final {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--linen);
+    line-height: 2;
+  }
+
+  .name-simon { color: var(--soft-text); }
+  .name-peter { color: var(--sand-gold); font-size: 1.25rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--night-sea);
+    padding: 28px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  footer p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 1px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    .timeline-line { left: 32px; }
+    .chapter {
+      grid-template-columns: 56px 1fr !important;
+    }
+    .chapter.left .chapter-content,
+    .chapter.right .chapter-content {
+      grid-column: 2 !important;
+      grid-row: 1;
+      text-align: left !important;
+      padding-left: 18px !important;
+      padding-right: 0 !important;
+    }
+    .chapter.left .chapter-node,
+    .chapter.right .chapter-node {
+      grid-column: 1 !important;
+      grid-row: 1;
+    }
+    .chapter-empty { display: none !important; }
+    .chapter.left .verse-box {
+      border-left: 2px solid var(--galilee) !important;
+      border-right: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chapter { opacity: 1; transform: none; transition: none; }
+    .scroll-arrow { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <canvas class="hero-canvas" id="waveCanvas"></canvas>
+  <div class="hero-content">
+    <div class="series-label">성경 인물 시리즈</div>
+    <h1>베드로<br><span>Petros</span></h1>
+    <p class="hero-sub">"시몬"이 "반석"이 되기까지의 이야기</p>
+    <div class="hero-verse">
+      <p>갈릴리의 새벽은 늘 그렇듯 고요하게 시작되었습니다. 물안개가 잔잔히 깔린 바다 위에서 한 사내가 그물을 정리하고 있었습니다. 그의 이름은 시몬. 아직 세상은 그를 알지 못했고, 그 역시 자신이 누구인지 알지 못했습니다. 그러나 하나님의 경륜은 이미 그를 향해 움직이고 있었습니다.</p>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ══ JOURNEY ══ -->
+<section class="journey">
+  <div class="timeline-line"></div>
+  <h2 class="journey-title">열 장면으로 읽는 한 인간의 변화</h2>
+
+  <!-- 1. 부르심 -->
+  <div class="chapter left">
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 01</span>
+      <h3 class="chapter-title">부르심<br>평범한 하루 속에 임한 하나님의 음성</h3>
+      <p class="chapter-body">그날은 특별해 보이지 않았습니다. 그러나 영원의 관점에서는, 한 인간의 존재가 다시 정의되는 순간이었습니다.</p>
+      <div class="verse-box">
+        "예수님께서… '나를 따라오십시오. 내가 여러분을 사람 얻는 어부가 되게 하겠습니다.'라고 말씀하시자, 그들이 즉시 그물을 버리고 예수님을 따라갔다."
+        <span class="verse-ref">마태복음 4:19-20</span>
+      </div>
+      <p class="chapter-body">시몬은 단지 직업을 버린 것이 아니었습니다.
+그는 자신의 생존 방식과 익숙한 세계, 그리고 '자기 자신'을 내려놓았습니다.
+
+그리고 또 하나의 선언이 이어집니다.</p>
+      <div class="verse-box">
+        "그대는 요한의 아들 시몬입니다. 그대가 게바라 불릴 것입니다."
+        <span class="verse-ref">요한복음 1:42</span>
+      </div>
+      <p class="chapter-body">이 선언은 미래를 향한 것이었습니다.
+아직 반석이 아닌 자에게 "반석"이라 부르신 것입니다.</p>
+      <span class="insight">하나님은 현재의 상태가 아니라, 완성될 정체성으로 사람을 부르십니다.</span>
+    </div>
+    <div class="chapter-node"><div class="node-circle">01</div></div>
+    <div class="chapter-empty"></div>
+  </div>
+
+  <!-- 2. 흔들리는 믿음 -->
+  <div class="chapter right">
+    <div class="chapter-empty"></div>
+    <div class="chapter-node"><div class="node-circle">02</div></div>
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 02</span>
+      <h3 class="chapter-title">흔들리는 믿음<br>물 위에서 드러난 내면의 갈등</h3>
+      <p class="chapter-body">어느 밤, 바람이 거세게 불었습니다.</p>
+      <div class="verse-box">
+        "주님, 주님이시라면 나에게 명령하시어 물 위를 걸어오라 하십시오."
+        <span class="verse-ref">마태복음 14:28</span>
+      </div>
+      <p class="chapter-body">그는 배를 떠났습니다.
+믿음은 그를 물 위에 세웠습니다.
+
+그러나 곧 상황을 바라보는 순간,</p>
+      <div class="verse-box">
+        "거센 바람을 보고 두려워하여 물에 빠져 들어가자…"
+        <span class="verse-ref">마태복음 14:30</span>
+      </div>
+      <p class="chapter-body">베드로는 깨닫기 시작합니다.
+믿음은 환경이 아니라 시선의 방향에 달려 있다는 사실을.</p>
+      <div class="verse-box">
+        "믿음이 작은 사람이여, 왜 의심하였습니까?"
+        <span class="verse-ref">마태복음 14:31</span>
+      </div>
+      <p class="chapter-body">주님의 손은 그를 책망하기 전에 붙잡으셨습니다.
+그는 아직 반석이 아니었지만, 이미 주님의 손 안에 있는 사람이었습니다.</p>
+    </div>
+  </div>
+
+  <!-- 3. 계시의 순간 -->
+  <div class="chapter left">
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 03</span>
+      <h3 class="chapter-title">계시의 순간<br>하늘에서 온 고백</h3>
+      <p class="chapter-body">가이사랴 빌립보에서 한 고백이 터져 나옵니다.</p>
+      <div class="verse-box">
+        "주님은 그리스도이시요, 살아 계신 하나님의 아들이십니다."
+        <span class="verse-ref">마태복음 16:16</span>
+      </div>
+      <p class="chapter-body">이 고백은 인간의 이해에서 나온 것이 아니었습니다.</p>
+      <div class="verse-box">
+        "이것을 그대에게 계시하신 분은… 하늘에 계신 나의 아버지이십니다."
+        <span class="verse-ref">마태복음 16:17</span>
+      </div>
+      <p class="chapter-body">그리고 주님의 선언:</p>
+      <div class="verse-box">
+        "그대는 베드로입니다. 내가 이 반석 위에 내 교회를 건축할 것입니다."
+        <span class="verse-ref">마태복음 16:18</span>
+      </div>
+      <p class="chapter-body">여기서 반석은 한 개인의 능력이 아니라,
+하늘로부터 온 계시 위에 세워진 믿음을 의미합니다.</p>
+      <span class="insight">교회는 사람의 열심이 아니라, 하나님의 계시 위에 세워집니다.</span>
+    </div>
+    <div class="chapter-node"><div class="node-circle">03</div></div>
+    <div class="chapter-empty"></div>
+  </div>
+
+  <!-- 4. 오해와 교정 -->
+  <div class="chapter right">
+    <div class="chapter-empty"></div>
+    <div class="chapter-node"><div class="node-circle">04</div></div>
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 04</span>
+      <h3 class="chapter-title">오해와 교정<br>변화산에서 드러난 인간적 한계</h3>
+      <p class="chapter-body">변화산 위에서 베드로는 말합니다.</p>
+      <div class="verse-box">
+        "장막 셋을 짓겠습니다…"
+        <span class="verse-ref">마태복음 17:4</span>
+      </div>
+      <p class="chapter-body">그는 영광을 보았지만, 그 의미를 온전히 이해하지 못했습니다.
+
+그때 하늘에서 음성이 들립니다.</p>
+      <div class="verse-box">
+        "이는 내 사랑하는 아들이니… 너희는 그의 말을 들어라!"
+        <span class="verse-ref">마태복음 17:5</span>
+      </div>
+      <p class="chapter-body">하나님은 분명히 하십니다.
+모든 영광의 중심은 오직 그리스도라는 사실을.</p>
+    </div>
+  </div>
+
+  <!-- 5. 붕괴 -->
+  <div class="chapter left">
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 05</span>
+      <h3 class="chapter-title">붕괴<br>가장 깊은 실패의 밤</h3>
+      <p class="chapter-body">겟세마네에서 그는 칼을 들었습니다.</p>
+      <div class="verse-box">
+        "그 칼을 칼집에 꽂으십시오."
+        <span class="verse-ref">요한복음 18:11</span>
+      </div>
+      <p class="chapter-body">그러나 그 용기는 오래가지 못했습니다.</p>
+      <div class="verse-box">
+        "나는 그 사람을 모르오!"
+        <span class="verse-ref">마태복음 26:72</span>
+      </div>
+      <p class="chapter-body">세 번의 부인, 그리고 닭 울음.</p>
+      <div class="verse-box">
+        "밖으로 나가 슬피 울었다."
+        <span class="verse-ref">마태복음 26:75</span>
+      </div>
+      <p class="chapter-body">이 눈물은 단순한 후회가 아니라,
+자기 확신이 무너지는 자리였습니다.</p>
+    </div>
+    <div class="chapter-node"><div class="node-circle">05</div></div>
+    <div class="chapter-empty"></div>
+  </div>
+
+  <!-- 6. 회복 -->
+  <div class="chapter right">
+    <div class="chapter-empty"></div>
+    <div class="chapter-node"><div class="node-circle">06</div></div>
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 06</span>
+      <h3 class="chapter-title">회복<br>사랑으로 다시 세워짐</h3>
+      <p class="chapter-body">부활 후, 디베랴 바닷가에서 주님은 묻습니다.</p>
+      <div class="verse-box">
+        "그대가 나를 사랑하십니까?"
+        <span class="verse-ref">요한복음 21:15</span>
+      </div>
+      <p class="chapter-body">세 번의 질문, 세 번의 대답.
+
+그리고 사명의 회복:</p>
+      <div class="verse-box">
+        "내 양들을 먹이십시오."
+        <span class="verse-ref">요한복음 21:17</span>
+      </div>
+      <p class="chapter-body">사명은 능력에서 나오는 것이 아니라,
+사랑에서 시작된다는 사실이 드러납니다.
+
+이어지는 말씀은 그의 미래를 가리킵니다.</p>
+      <div class="verse-box">
+        "그대가 늙어서는… 다른 사람이 그대를 데려갈 것입니다."
+        <span class="verse-ref">요한복음 21:18</span>
+      </div>
+      <p class="chapter-body">이제 그는 자기 뜻이 아니라, 하나님의 뜻에 의해 살아가는 사람이 됩니다.</p>
+      <span class="insight">사명은 능력에서 나오는 것이 아니라, 사랑에서 시작됩니다.</span>
+    </div>
+  </div>
+
+  <!-- 7. 변화 -->
+  <div class="chapter left">
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 07</span>
+      <h3 class="chapter-title">변화<br>성령 안에서 새롭게 된 사람</h3>
+      <p class="chapter-body">오순절이 임했을 때, 베드로는 전혀 다른 사람이 되어 있었습니다.</p>
+      <div class="verse-box">
+        "여러분이 십자가에 못 박은 이 예수님을 하나님께서 주님과 그리스도가 되게 하셨습니다."
+        <span class="verse-ref">사도행전 2:36</span>
+      </div>
+      <p class="chapter-body">그 결과,</p>
+      <div class="verse-box">
+        "그날에 약 삼천 명의 사람들이 더해졌다."
+        <span class="verse-ref">사도행전 2:41</span>
+      </div>
+      <p class="chapter-body">두려움에 떨던 사람이 이제 담대히 진리를 선포하는 사도가 되었습니다.</p>
+    </div>
+    <div class="chapter-node"><div class="node-circle">07</div></div>
+    <div class="chapter-empty"></div>
+  </div>
+
+  <!-- 8. 확장 -->
+  <div class="chapter right">
+    <div class="chapter-empty"></div>
+    <div class="chapter-node"><div class="node-circle">08</div></div>
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 08</span>
+      <h3 class="chapter-title">확장<br>복음이 경계를 넘어가다</h3>
+      <p class="chapter-body">고넬료의 집에서 그는 말합니다.</p>
+      <div class="verse-box">
+        "하나님은 사람을 외모로 판단하지 않으십니다."
+        <span class="verse-ref">사도행전 10:34</span>
+      </div>
+      <p class="chapter-body">유대인의 경계를 넘어 복음은 모든 민족에게 열립니다.
+
+그리고 예루살렘 공회에서 선언합니다.</p>
+      <div class="verse-box">
+        "우리는 주 예수님의 은혜로 구원받는다고 믿습니다."
+        <span class="verse-ref">사도행전 15:11</span>
+      </div>
+      <span class="insight">은혜는 모든 사람에게 동일하게 주어지는 구원의 길입니다.</span>
+    </div>
+  </div>
+
+  <!-- 9. 완성 -->
+  <div class="chapter left">
+    <div class="chapter-content">
+      <span class="chapter-label">Chapter 09</span>
+      <h3 class="chapter-title">완성<br>고난을 통해 정련된 신앙</h3>
+      <p class="chapter-body">생애 말년에 그는 이렇게 기록합니다.</p>
+      <div class="verse-box">
+        "여러분의 믿음의 시련은… 훨씬 더 보배롭습니다."
+        <span class="verse-ref">베드로전서 1:7</span>
+      </div>
+      <p class="chapter-body">그리고 더 깊은 통찰을 전합니다.</p>
+      <div class="verse-box">
+        "신성한 본성에 동참하는 사람들이 되도록…"
+        <span class="verse-ref">베드로후서 1:4</span>
+      </div>
+      <p class="chapter-body">그의 신앙은 단순한 경험을 넘어,
+하나님의 성품에 참여하는 자리까지 나아갔습니다.</p>
+    </div>
+    <div class="chapter-node"><div class="node-circle">09</div></div>
+    <div class="chapter-empty"></div>
+  </div>
+
+</section>
+
+<!-- ══ CLOSING ══ -->
+<section class="closing">
+  <div class="closing-inner">
+    <span class="closing-label">결론 · Chapter 10</span>
+    <h2>시몬에서 <em>베드로</em>로</h2>
+    <p class="closing-body">
+      그의 삶은 한 방향으로 흐릅니다.<br>
+      자기 자신으로 시작하여, 하나님 안에서 완성되는 여정.
+    </p>
+    <div class="closing-divider"></div>
+    <p class="closing-body">
+      그는 자주 넘어졌고, 흔들렸으며, 실패했습니다.<br>
+      그러나 끝까지 주님을 떠나지 않았습니다.
+    </p>
+    <div class="closing-divider"></div>
+    <p class="closing-final">
+      어부 <span class="name-simon">시몬</span>은<br>
+      교회의 기둥 <span class="name-peter">베드로</span>로 세워졌습니다.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <p>성경 인물 시리즈 &nbsp;·&nbsp; 부산교회 &nbsp;·&nbsp; kidori777.github.io/Bible</p>
+</footer>
+
+<script>
+// ── 물결 캔버스 ──
+const canvas = document.getElementById('waveCanvas');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+let t = 0;
+function drawWaves() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const bg = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  bg.addColorStop(0, '#0A1520');
+  bg.addColorStop(1, '#0D1B2A');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const W = canvas.width;
+  const H = canvas.height;
+
+  const waves = [
+    { amp: 30, freq: 0.008, speed: 0.012, y: H * 0.72, alpha: 0.18, color: '#3A6F9A' },
+    { amp: 20, freq: 0.011, speed: 0.018, y: H * 0.76, alpha: 0.13, color: '#4A8FBA' },
+    { amp: 16, freq: 0.016, speed: 0.024, y: H * 0.80, alpha: 0.10, color: '#5AAACC' },
+    { amp: 38, freq: 0.005, speed: 0.007, y: H * 0.68, alpha: 0.08, color: '#1B3A5C' },
+  ];
+
+  waves.forEach(w => {
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    for (let x = 0; x <= W; x += 3) {
+      const y = w.y
+        + Math.sin(x * w.freq + t * w.speed * 60) * w.amp
+        + Math.sin(x * w.freq * 1.7 + t * w.speed * 40 + 1) * w.amp * 0.4;
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W, H);
+    ctx.closePath();
+    ctx.fillStyle = w.color;
+    ctx.globalAlpha = w.alpha;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+
+  ctx.globalAlpha = 0.055;
+  for (let i = 0; i < 6; i++) {
+    const x = (W * 0.12 * i + Math.sin(t * 0.3 + i) * 30) % W;
+    const y = H * 0.65 + Math.sin(t * 0.5 + i * 2) * 12;
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, 40);
+    grad.addColorStop(0, '#C8A96E');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(x - 40, y - 20, 80, 40);
+  }
+  ctx.globalAlpha = 1;
+
+  t += 0.016;
+  requestAnimationFrame(drawWaves);
+}
+drawWaves();
+
+// ── 스크롤 등장 ──
+const chapters = document.querySelectorAll('.chapter');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+chapters.forEach(ch => observer.observe(ch));
+</script>
+</body>
+</html>
